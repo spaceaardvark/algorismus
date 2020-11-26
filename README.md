@@ -1,2 +1,3 @@
 # algorismus
-Helpful functions for coding challenges and mathematically oriented problems.
+
+Utilities for coding challenges and mathematically-oriented tasks.
