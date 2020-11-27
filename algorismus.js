@@ -21,6 +21,9 @@ const ntoi = (n) => n - 1;  // hmm, what should ntoi(0) be? 0 or -1?
 const range = (from, toExclusive) => 
   [...Array(toExclusive - from)].map((_, i) => from + i);
 
+const sortNumerical = (xs) => xs.slice().sort((a, b) => a - b);
+const sortAlphabetical = (xs) => xs.slice().sort();
+
 /**
  * Comparison function for binary search, receives the index being evaluated and the
  * entire array being searched.
@@ -60,7 +63,7 @@ const binarySearch = (comp, xs) => {
     span = end - start;
   }
 
-  for (let i = start; i < start + span; i++) {
+  for (let i = start; i <= start + span; i++) {
     if (comp(i, xs) === 0) return i;
   }
 
