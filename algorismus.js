@@ -21,23 +21,12 @@ const ntoi = (n) => n - 1;  // hmm, what should ntoi(0) be? 0 or -1?
 const range = (from, toExclusive) => 
   [...Array(toExclusive - from)].map((_, i) => from + i);
 
+const allBits = (n) => Math.pow(2, n + 1) - 1;
+const oneBit = (n) => Math.pow(2, n);
+
 const sortNumerical = (xs) => xs.slice().sort((a, b) => a - b);
 const sortAlphabetical = (xs) => xs.slice().sort();
 
-/**
- * Comparison function for binary search, receives the index being evaluated and the
- * entire array being searched.
- * 
- * @typedef {function(mid: number, xs: []): number} BinarySearchCompare
- * @returns {number} -1 if value is too low, 1 if it's too high, 0 if it's just right
- */
-
-/**
- * Searches a sorted array using a comparison function.
- * 
- * @param {BinarySearchCompare} comp - comparison function
- * @param {[]]} xs - array to be searched
- */
 const binarySearch = (comp, xs) => {
   if (xs === undefined || xs === null || xs.length === 0) return -1;
 
@@ -69,6 +58,22 @@ const binarySearch = (comp, xs) => {
 
   return -1;
 };
+
+const memoize = (fn) => {
+  const cache = {};
+  const slice = Array.prototype.slice;
+
+  const clean = (a) => 
+    (typeof a) === "object" ? JSON.stringify(a) : a;
+
+  return (...args) => {
+    const cleanedArgs = slice.call(args).map(clean);
+    if (!(cleanedArgs in cache)) {
+      cache[cleanedArgs] = fn.apply(this, args);
+    }
+    return cache[cleanedArgs];
+  }
+}
 
 // --[ END ]--
 
@@ -133,5 +138,19 @@ assert(binarySearch(testComp, [99, ...range(100, 100_000)]) === 0);
 assert(binarySearch(testComp, [...range(-100, 98), 99]) === 198);
 assert(binarySearch(testComp, [...range(-100_000, 98)]) === -1);
 assert(binarySearch(testComp, [...range(0,4)]) === -1);
+
+const fn = (a, b, c) => Math.random();
+const fm = memoize(fn);
+const argSets = [
+  [1,2,3],
+  [undefined, null, 0],
+  [{a:1},{b:2,c:{d:3}},"hi there"],
+];
+for (let args of argSets) {
+  const f1 = fm(...args);
+  const f2 = fm(...args);
+  const f3 = fm(...args);
+  assert(f1 === f2 && f2 === f3);
+}
 
 console.log("All tests passed");
