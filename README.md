@@ -1,3 +1,3 @@
 # algorismus
 
-Functions I use for coding challenges and mathematics-heavy tasks.
+Functions and classes I use for mathematically heavy problems and coding challenges.
