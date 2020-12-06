@@ -102,6 +102,22 @@ class MathArray {
     return this.mapOver(fn, 1, this.N);
   }
 
+  reduceOver(fn, initial, start, end) {
+    let N, acc, i;
+
+    N = end - start + 1;
+    acc = initial;
+    for (i = 0; i < N; i++) {
+      acc = fn(acc, this.get(i + start), i + start, this);
+    }
+
+    return acc;
+  }
+
+  reduce(fn, initial) {
+    return this.reduceOver(fn, initial, 1, this.N);
+  }
+
   forEach(fn) {
     let i;
 
@@ -110,6 +126,10 @@ class MathArray {
     }
 
     return this;
+  }
+
+  sort(fn = (a, b) => a - b) {
+    return MathArray.from(this.A.slice().sort(fn));
   }
 
   native() {
