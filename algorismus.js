@@ -202,6 +202,30 @@ const binarySearch = (comp, xs) => {
   return -1;
 };
 
+const firstIndexWhere = (pred, xs) => {
+  if (xs === undefined || xs === null || xs.length === 0) return -1;
+  if (pred(xs[0])) return 0;
+  if (!pred(xs[xs.length-1])) return -1;
+
+  let start, end, found, mid;
+
+  start = 0;
+  end = xs.length;
+  found = false;
+
+  while (start < end) {
+    mid = start + Math.floor((end - start) / 2);
+    if (pred(xs[mid])) {
+      found = true;
+      end = mid;
+    } else {
+      start = mid + 1;
+    }
+  }
+
+  return found ? mid : -1;
+}
+
 // FENWICK/DIMA/CETERCHI BINOMIAL SEARCH TREES
 
 class BinomialSearchTree {
